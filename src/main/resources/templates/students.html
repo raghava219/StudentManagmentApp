@@ -32,13 +32,13 @@ FusionCharts.ready(function () {
     
     /* <![CDATA[ */
     		    
-    var jsonDataString = /*[[${fusionChart}]]*/
+    let jsonDataString = /*[[${fusionChart}]]*/
     
     let sb = [];
     
     console.log(jsonDataString);
       
-    var jsonData = JSON.parse(jsonDataString);
+    let jsonData = JSON.parse(jsonDataString);
    
     for (const key in jsonData) {
     	
@@ -47,14 +47,24 @@ FusionCharts.ready(function () {
    
    console.log(sb.toString());
    
-   let jsonDataFile = JSON.parse(sb);
+   let jsonStrFinal = `[${sb.join(",")}]`;
+   
+   console.log(jsonDataString);
+   
+   let jsonDataFile = JSON.parse(jsonStrFinal);
     
     var myChart = new FusionCharts({
         type: 'column2d',
         renderAt: 'chart-container',
 
         dataFormat: 'json',
-        dataSource: jsonDataFile
+        dataSource: {
+        	chart: {
+        		caption: "Harry's Supermart",
+        		subCaption: "Top 5 stores in last month by revenue"
+        	},
+        	data: jsonDataFile
+        }
     });
 
     // Render the chart.
