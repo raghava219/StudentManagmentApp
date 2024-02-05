@@ -1,5 +1,8 @@
 package com.raghava.sms.controller;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -7,6 +10,8 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.raghava.sms.entity.Student;
 import com.raghava.sms.service.StudentService;
 
@@ -23,7 +28,32 @@ public class StudentController {
 	// handle method to handle list students and return model and view
 	@GetMapping("/students")
 	public String listStudents(Model model) {
+
+        String jacksonData = null;
+        
+        Map<String, Integer> dataValuePair = new HashMap<String, Integer>();
+        dataValuePair.put("Venezuela", 290);
+        dataValuePair.put("Saudi", 260);
+        dataValuePair.put("Canada", 180);
+        dataValuePair.put("Iran", 140);
+        dataValuePair.put("Russia", 115);
+        dataValuePair.put("UAE", 100);
+        dataValuePair.put("US", 30);
+        dataValuePair.put("China", 30);
+
+        ObjectMapper objectMapper = new ObjectMapper();
+
+		try {
+			jacksonData = objectMapper.writeValueAsString(dataValuePair);
+		} catch (JsonProcessingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+        
+        model.addAttribute("fusionChart", jacksonData);
+		
 		model.addAttribute("students", studentService.getAllStudents());
+
 		return "students";
 	}
 
